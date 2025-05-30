@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atur Aja - Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7f8;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: #3399ff;
+      color: white;
+      padding: 1rem 2rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    nav.navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    nav.navbar a.brand {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    nav.navbar .nav-buttons a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: 600;
+    }
+    main {
+      flex-grow: 1;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .summary-cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      flex: 1 1 250px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 250px;
+    }
+    .card h2 {
+      margin: 0 0 0.5rem 0;
+      font-size: 1.25rem;
+      color: #3399ff;
+    }
+    .card p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0;
+    }
+    .card .subtext {
+      font-size: 0.9rem;
+      color: #666;
+      margin-top: 0.25rem;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .nav-buttons a {
+      background-color: #3399ff;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+    .nav-buttons a:hover,
+    .nav-buttons a:focus {
+      background-color: #267acc;
+      outline: none;
+    }
+    .chart-container {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 1.5rem;
+    }
+    .chart-container h2 {
+      margin-top: 0;
+      color: #3399ff;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    @media (max-width: 600px) {
+      .summary-cards {
+        flex-direction: column;
+      }
+      .nav-buttons {
+        flex-direction: column;
+      }
+      .nav-buttons a {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav role="navigation" aria-label="Main navigation" class="navbar">
+      <a href="dashboard.html" class="brand" aria-label="Atur Aja Home">Atur Aja</a>
+      <div class="nav-buttons" role="navigation" aria-label="Navigasi utama">
+        <a href="input.html" role="button">Input Data</a>
+        <a href="simulasi.html" role="button">Simulasi</a>
+        <a href="laporan.html" role="button">Laporan</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <h1 tabindex="0">Dashboard</h1>
+
+    <section class="summary-cards" aria-label="Ringkasan metrik utama">
+      <article class="card" tabindex="0" aria-describedby="desc-biaya">
+        <h2>Total Biaya Produksi</h2>
+        <p id="total-cost">Rp 0</p>
+        <p class="subtext" id="desc-biaya">Jumlah total biaya bahan baku yang digunakan dalam produksi.</p>
+      </article>
+      <article class="card" tabindex="0" aria-describedby="desc-keuntungan">
+        <h2>Total Keuntungan</h2>
+        <p id="total-profit">Rp 0</p>
+        <p class="subtext" id="desc-keuntungan">Estimasi keuntungan bersih dari produk yang dijual.</p>
+      </article>
+      <article class="card" tabindex="0" aria-describedby="desc-produk">
+        <h2>Produk Paling Untung & Rugi</h2>
+        <p id="most-profitable">-</p>
+        <p id="most-loss">-</p>
+        <p class="subtext" id="desc-produk">Produk dengan margin keuntungan tertinggi dan kerugian terbesar.</p>
+      </article>
+    </section>
+
+    <section class="chart-container" aria-label="Grafik keuntungan per produk">
+      <h2>Grafik Keuntungan per Produk</h2>
+      <canvas id="profitChart" role="img" aria-label="Grafik batang keuntungan per produk"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    <p style="text-align:center; padding:1rem 0; color:#666;">&copy; 2025 Atur Aja. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Dummy data for demonstration
+    const data = {
+      totalCost: 15000000,
+      totalProfit: 7500000,
+      mostProfitable: "Produk A (Rp 3.000.000)",
+      mostLoss: "Produk C (Rp -500.000)",
+      profitPerProduct: {
+        labels: ["Produk A", "Produk B", "Produk C", "Produk D"],
+        profits: [3000000, 2000000, -500000, 3000000]
+      }
+    };
+
+    // Update summary cards
+    document.getElementById('total-cost').textContent = data.totalCost.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+    document.getElementById('total-profit').textContent = data.totalProfit.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+    document.getElementById('most-profitable').textContent = `Paling Untung: ${data.mostProfitable}`;
+    document.getElementById('most-loss').textContent = `Paling Rugi: ${data.mostLoss}`;
+
+    // Setup Chart.js bar chart
+    const ctx = document.getElementById('profitChart').getContext('2d');
+    const profitChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.profitPerProduct.labels,
+        datasets: [{
+          label: 'Keuntungan (Rp)',
+          data: data.profitPerProduct.profits,
+          backgroundColor: data.profitPerProduct.profits.map(p => p >= 0 ? 'rgba(40, 167, 69, 0.7)' : 'rgba(220, 53, 69, 0.7)'),
+          borderColor: data.profitPerProduct.profits.map(p => p >= 0 ? 'rgba(40, 167, 69, 1)' : 'rgba(220, 53, 69, 1)'),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: function(value) {
+                return 'Rp ' + value.toLocaleString('id-ID');
+              }
+            },
+            title: {
+              display: true,
+              text: 'Keuntungan (Rupiah)'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Produk'
+            }
+          }
+        },
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return 'Keuntungan: Rp ' + context.parsed.y.toLocaleString('id-ID');
+              }
+            }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atur Aja - Registrasi</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f8;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .register-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #333;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 1rem;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus {
+      border-color: #3399ff;
+      outline: none;
+    }
+    button {
+      margin-top: 1.5rem;
+      padding: 0.75rem;
+      font-size: 1rem;
+      background-color: #3399ff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover,
+    button:focus {
+      background-color: #267acc;
+      outline: none;
+    }
+    .back-login {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .back-login a {
+      color: #3399ff;
+      text-decoration: none;
+    }
+    .back-login a:hover,
+    .back-login a:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+    .error-message {
+      color: #d9534f;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="register-container" role="main" aria-labelledby="register-title">
+    <h2 id="register-title">Daftar Akun Baru</h2>
+    <form id="registerForm" novalidate>
+      <label for="name">Nama Lengkap</label>
+      <input type="text" id="name" name="name" required autocomplete="name" aria-required="true" />
+      <span class="error-message" id="nameError"></span>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required autocomplete="email" aria-required="true" />
+      <span class="error-message" id="emailError"></span>
+
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" required autocomplete="username" aria-required="true" />
+      <span class="error-message" id="usernameError"></span>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required aria-required="true" minlength="6" />
+      <span class="error-message" id="passwordError"></span>
+
+      <label for="confirmPassword">Konfirmasi Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required aria-required="true" minlength="6" />
+      <span class="error-message" id="confirmPasswordError"></span>
+
+      <button type="submit" aria-label="Daftar">Daftar</button>
+    </form>
+    <p class="back-login">
+      Sudah punya akun? <a href="login.html">Masuk di sini</a>
+    </p>
+  </div>
+
+  <script>
+    const form = document.getElementById('registerForm');
+    const nameInput = document.getElementById('name');
+    const emailInput = document.getElementById('email');
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const usernameError = document.getElementById('usernameError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+    function validateEmail(email) {
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    form.addEventListener('submit', function(event) {
+      let valid = true;
+
+      // Reset errors
+      nameError.textContent = '';
+      emailError.textContent = '';
+      usernameError.textContent = '';
+      passwordError.textContent = '';
+      confirmPasswordError.textContent = '';
+
+      // Validate name
+      if (!nameInput.value.trim()) {
+        nameError.textContent = 'Nama lengkap wajib diisi.';
+        valid = false;
+      }
+
+      // Validate email
+      if (!emailInput.value.trim()) {
+        emailError.textContent = 'Email wajib diisi.';
+        valid = false;
+      } else if (!validateEmail(emailInput.value.trim())) {
+        emailError.textContent = 'Format email tidak valid.';
+        valid = false;
+      }
+
+      // Validate username
+      if (!usernameInput.value.trim()) {
+        usernameError.textContent = 'Username wajib diisi.';
+        valid = false;
+      }
+
+      // Validate password
+      if (!passwordInput.value) {
+        passwordError.textContent = 'Password wajib diisi.';
+        valid = false;
+      } else if (passwordInput.value.length < 6) {
+        passwordError.textContent = 'Password minimal 6 karakter.';
+        valid = false;
+      }
+
+      // Validate confirm password
+      if (!confirmPasswordInput.value) {
+        confirmPasswordError.textContent = 'Konfirmasi password wajib diisi.';
+        valid = false;
+      } else if (confirmPasswordInput.value !== passwordInput.value) {
+        confirmPasswordError.textContent = 'Password dan konfirmasi tidak cocok.';
+        valid = false;
+      }
+
+      if (!valid) {
+        event.preventDefault();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atur Aja - Beranda</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Mobile-first base styles */
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+      color: #1f2937;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.3s ease, background-color 0.3s ease;
+    }
+
+    a:hover,
+    a:focus {
+      color: #2563eb;
+      outline: none;
+    }
+
+    header {
+      background: #2563eb;
+      color: white;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .brand {
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 0.05em;
+      color: white;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1.25rem;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      display: inline-block;
+      user-select: none;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background-color: #2563eb;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-secondary {
+      background-color: #e0e7ff;
+      color: #3730a3;
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus {
+      background-color: #c7d2fe;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    main {
+      max-width: 900px;
+      margin: 3rem auto 4rem;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero {
+      background: white;
+      padding: 3rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      width: 100%;
+      max-width: 700px;
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    #hero-title {
+      font-size: 2.75rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: #1e40af;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+      color: #4b5563;
+      line-height: 1.5;
+    }
+
+    .hero-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Responsive navigation menu for small screens */
+    @media (max-width: 600px) {
+      .navbar {
+        flex-wrap: wrap;
+      }
+      .nav-buttons {
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.75rem;
+      }
+      .btn {
+        width: 48%;
+        text-align: center;
+      }
+      #hero-title {
+        font-size: 2rem;
+      }
+      .hero-description {
+        font-size: 1rem;
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem;
+      background: #f9fafb;
+      color: #6b7280;
+      font-size: 0.9rem;
+      border-top: 1px solid #e5e7eb;
+      user-select: none;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav role="navigation" aria-label="Main navigation" class="navbar">
+      <a href="#" class="brand" aria-label="Atur Aja Home">Atur Aja</a>
+      <div class="nav-buttons">
+        <a href="login.html" class="btn btn-primary" role="button">Login</a>
+        <a href="register.html" class="btn btn-secondary" role="button">Daftar</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 id="hero-title">Atur Aja</h1>
+      <p class="hero-description">
+        Solusi mudah untuk mengatur produksi dan keuntungan bisnis Anda. Input data bahan baku dan produk, jalankan simulasi produksi, dan dapatkan laporan lengkap untuk pengambilan keputusan yang tepat.
+      </p>
+      <div class="hero-actions">
+        <a href="login.html" class="btn btn-primary" role="button">Login</a>
+        <a href="register.html" class="btn btn-secondary" role="button">Daftar</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Atur Aja. All rights reserved.</p>
+  </footer>
+</body>
+</html>

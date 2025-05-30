@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atur Aja - Input Data</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7f8;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      color: #333;
+    }
+    header {
+      background-color: #3399ff;
+      padding: 1rem 2rem;
+      color: white;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    main {
+      flex: 1;
+      padding: 2rem;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    h2 {
+      color: #3399ff;
+      margin-bottom: 1rem;
+    }
+    form {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: bold;
+    }
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    select[multiple] {
+      height: 100px;
+    }
+    button {
+      background-color: #3399ff;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover,
+    button:focus {
+      background-color: #267acc;
+      outline: none;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 1rem;
+      color: #3399ff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .back-link:hover,
+    .back-link:focus {
+      text-decoration: underline;
+      outline: none;
+    }
+    @media (min-width: 600px) {
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+      form {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Atur Aja - Input Data</h1>
+  </header>
+  <main>
+    <section aria-labelledby="raw-materials-title">
+      <h2 id="raw-materials-title">Input Bahan Baku</h2>
+      <form id="raw-material-form" aria-describedby="raw-materials-desc" novalidate>
+        <p id="raw-materials-desc" class="sr-only">Form untuk memasukkan data bahan baku seperti nama, harga beli, dan stok.</p>
+        <div class="form-grid">
+          <div>
+            <label for="material-name">Nama Bahan</label>
+            <input type="text" id="material-name" name="materialName" required aria-required="true" autocomplete="off" />
+          </div>
+          <div>
+            <label for="material-price">Harga Beli (Rp)</label>
+            <input type="number" id="material-price" name="materialPrice" min="0" step="100" required aria-required="true" />
+          </div>
+          <div>
+            <label for="material-stock">Stok (Jumlah)</label>
+            <input type="number" id="material-stock" name="materialStock" min="0" step="1" required aria-required="true" />
+          </div>
+        </div>
+        <button type="submit" aria-label="Simpan Bahan Baku">Simpan Bahan Baku</button>
+      </form>
+    </section>
+
+    <section aria-labelledby="product-input-title">
+      <h2 id="product-input-title">Input Produk</h2>
+      <form id="product-form" aria-describedby="product-desc" novalidate>
+        <p id="product-desc" class="sr-only">Form untuk memasukkan data produk seperti nama produk, harga jual, dan bahan yang digunakan.</p>
+        <div class="form-grid">
+          <div>
+            <label for="product-name">Nama Produk</label>
+            <input type="text" id="product-name" name="productName" required aria-required="true" autocomplete="off" />
+          </div>
+          <div>
+            <label for="product-price">Harga Jual (Rp)</label>
+            <input type="number" id="product-price" name="productPrice" min="0" step="100" required aria-required="true" />
+          </div>
+          <div style="grid-column: 1 / -1;">
+            <label for="product-materials">Bahan yang Digunakan (Pilih satu atau lebih)</label>
+            <select id="product-materials" name="productMaterials" multiple size="5" aria-multiselectable="true" required aria-required="true" aria-describedby="materials-help">
+              <!-- Options will be dynamically populated -->
+            </select>
+            <small id="materials-help">Tekan Ctrl (Cmd di Mac) untuk memilih lebih dari satu bahan.</small>
+          </div>
+        </div>
+        <button type="submit" aria-label="Simpan Produk">Simpan Produk</button>
+      </form>
+    </section>
+
+    <a href="dashboard.html" class="back-link" aria-label="Kembali ke Dashboard">← Kembali ke Dashboard</a>
+  </main>
+
+  <script>
+    // Simple in-memory storage for demo purposes
+    const rawMaterials = [];
+    const products = [];
+
+    // Elements
+    const rawMaterialForm = document.getElementById('raw-material-form');
+    const productForm = document.getElementById('product-form');
+    const productMaterialsSelect = document.getElementById('product-materials');
+
+    // Function to update product materials options based on rawMaterials array
+    function updateMaterialOptions() {
+      // Clear existing options
+      productMaterialsSelect.innerHTML = '';
+      rawMaterials.forEach((material, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.textContent = `${material.name} (Stok: ${material.stock})`;
+        productMaterialsSelect.appendChild(option);
+      });
+    }
+
+    // Handle raw material form submission
+    rawMaterialForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = rawMaterialForm.materialName.value.trim();
+      const price = parseFloat(rawMaterialForm.materialPrice.value);
+      const stock = parseInt(rawMaterialForm.materialStock.value, 10);
+
+      if (!name || isNaN(price) || price < 0 || isNaN(stock) || stock < 0) {
+        alert('Mohon isi data bahan baku dengan benar.');
+        return;
+      }
+
+      rawMaterials.push({ name, price, stock });
+      alert(`Bahan baku "${name}" berhasil disimpan.`);
+
+      rawMaterialForm.reset();
+      updateMaterialOptions();
+    });
+
+    // Handle product form submission
+    productForm.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = productForm.productName.value.trim();
+      const price = parseFloat(productForm.productPrice.value);
+      const selectedOptions = Array.from(productMaterialsSelect.selectedOptions);
+      const selectedMaterials = selectedOptions.map(opt => rawMaterials[opt.value]);
+
+      if (!name || isNaN(price) || price < 0 || selectedMaterials.length === 0) {
+        alert('Mohon isi data produk dengan benar dan pilih bahan yang digunakan.');
+        return;
+      }
+
+      products.push({ name, price, materials: selectedMaterials });
+      alert(`Produk "${name}" berhasil disimpan.`);
+
+      productForm.reset();
+    });
+
+    // Initialize material options on page load
+    updateMaterialOptions();
+  </script>
+</body>
+</html>
